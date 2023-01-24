@@ -2,49 +2,38 @@ package com.example.transportcompany.entities;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-import java.util.Set;
-
 @Entity
-@Table(name = "employer")
-public class Employer extends Person{
+@Table(name = "cashiers")
+public class Cashier extends Person{
 
+    private long id;
 
-    private BigDecimal budget;
-
-    private Set<Company> companies;
-
-
-    private String email;
+    private String username;
 
     private String password;
 
-    public Employer(){
+    private Office office;
 
-    }
-    @Column(name = "budget")
-    public BigDecimal getBudget() {
-        return budget;
+    public Cashier() {
     }
 
-    public void setBudget(BigDecimal budget) {
-        this.budget = budget;
-    }
-    @OneToMany
-    public Set<Company> getCompanies() {
-        return companies;
-    }
-
-    public void setCompanies(Set<Company> companies) {
-        this.companies = companies;
-    }
-    @Column(name = "email")
-    public String getEmail() {
-        return email;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public long getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(long id) {
+        this.id = id;
+    }
+    @Column(name = "userName")
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
     @Column(name = "password")
     public String getPassword() {
@@ -54,15 +43,13 @@ public class Employer extends Person{
     public void setPassword(String password) {
         this.password = password;
     }
-
-    @Override
-    public long getId() {
-        return super.getId();
+    @ManyToOne
+    public Office getOffice() {
+        return office;
     }
 
-    @Override
-    public void setId(long id) {
-        super.setId(id);
+    public void setOffice(Office office) {
+        this.office = office;
     }
 
     @Override

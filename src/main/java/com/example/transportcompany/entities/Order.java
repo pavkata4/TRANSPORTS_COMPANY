@@ -2,7 +2,6 @@ package com.example.transportcompany.entities;
 
 
 import jakarta.persistence.*;
-import org.hibernate.metamodel.model.domain.IdentifiableDomainType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "shipments")
-public class Shipment{
+public class Order {
 
     private long Id;
 
@@ -30,7 +29,7 @@ public class Shipment{
 
     private BigDecimal weight;
 
-    public Shipment() {
+    public Order() {
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

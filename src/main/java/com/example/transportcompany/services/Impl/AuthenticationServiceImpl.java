@@ -1,81 +1,95 @@
 package com.example.transportcompany.services.Impl;
 
+import com.example.transportcompany.Access.ManagerAccess;
+import com.example.transportcompany.DTOS.LoginUserDTO;
 import com.example.transportcompany.DTOS.RegisterUserDTO;
+import com.example.transportcompany.entities.Cashier;
+import com.example.transportcompany.entities.Company;
+import com.example.transportcompany.entities.Manager;
 import com.example.transportcompany.entities.Person;
-import com.example.transportcompany.entities.Employer;
-import com.example.transportcompany.repositories.EmployeeDao;
-import com.example.transportcompany.repositories.EmployerDao;
+import com.example.transportcompany.repositories.ManagerDao;
 import com.example.transportcompany.services.AuthenticationService;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Scanner;
 
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final StringBuilder sb;
-    private final EmployeeDao employeeDao;
+    private  StringBuilder sb;
+    private final ManagerDao managerDao;
 
-    private final EmployerDao employerDao;
+    private ManagerAccess managerAccess;
 
     private final ModelMapper mapper;
 
-    private Optional<Person> loggedUser;
-
-    private final Scanner scanner;
+    private Optional<Person> loggedUser = Optional.empty();
 
 
-    public AuthenticationServiceImpl(StringBuilder sb, EmployeeDao employeeDao, EmployerDao employerDao, ModelMapper mapper, Scanner scanner) {
-        this.sb = sb;
-        this.employeeDao = employeeDao;
-        this.employerDao = employerDao;
+    private  Scanner scanner;
+
+
+    public AuthenticationServiceImpl( ManagerDao managerDao, ModelMapper mapper) {
+        scanner = new Scanner(System.in);
+        this.managerDao = managerDao;;
         this.mapper = mapper;
-        this.scanner = scanner;
+
     }
 
-    public String registerEmployer(RegisterUserDTO employerDTO){
-        while (!employerDTO.getPassword().equals(employerDTO.getConfirmPassword())){
-            String newPassword = scanner.nextLine();
-            String confirmNewPassword = scanner.nextLine();
-            System.out.println("Enter a new password");
-            employerDTO.setPassword(newPassword);
-            System.out.println("Confirm password");
-            employerDTO.setConfirmPassword(confirmNewPassword);
-            registerEmployer(employerDTO);
+    @Override
+    public String registerManager(Manager manager) {
+        RegisterUserDTO managerDTO = new RegisterUserDTO();
+
+        System.out.println("Manager registration:");
+        System.out.println("Enter email:");
+        managerDTO.setEmail(scanner.nextLine());
+        System.out.println("Enter a password");
+        String newPassword = scanner.nextLine();
+        System.out.println("Confirm password");
+        String confirmNewPassword = scanner.nextLine();
+        managerDTO.setPassword(newPassword);
+        managerDTO.setConfirmPassword(confirmNewPassword);
+        if (!managerDTO.getPassword().equals(managerDTO.getConfirmPassword())) {
+            registerManager(manager);
         }
-        Employer employer;
-        employer = mapper.map(employerDTO, Employer.class);
-        employerDao.saveAndFlush(employer);
-        return "Successfully registered.";
-    }
-
-   /* public String LogInUser(){
+        manager.setPassword(managerDTO.getPassword());
+        manager.setEmail(managerDTO.getEmail());
+        return String.format("Мanager %s %s has been successfully registered!", manager.getFirstName(), manager.getLastName());
 
     }
 
-    public String registerEmployee(RegisterUserDTO employeeDTO){
-        sb.delete(0,sb.length());
-        Person person;
-        person = mapper.map(employeeDTO, Person.class);
+    @Override
+    public void loginManager() {
+        LoginUserDTO loginUserDTO = new LoginUserDTO();
+        System.out.println("Enter email:");
+        loginUserDTO.setUsername(scanner.nextLine());
+        System.out.println("Enter password: ");
+        loginUserDTO.setPassword(scanner.nextLine());
+        Optional<Manager> manager = managerDao.findByEmailAndPassword(loginUserDTO.getUsername(), loginUserDTO.getPassword());
+        manager.ifPresent(value -> managerAccess.mangerMenu(value));
 
-        if (employeeDao.findAll().isEmpty()) {
-            person.setRole(Role.ADMIN);
-        } else {
-            user1.setRole(Role.USER);
+    }
+
+    @Override
+    public void registerCashier(Cashier cashier) {
+        RegisterUserDTO cashierDTO = new RegisterUserDTO();
+        System.out.println("Cashier registration:");
+        System.out.println("Enter email:");
+        cashierDTO.setEmail(scanner.nextLine());
+        System.out.println("Enter a password");
+        String newPassword = scanner.nextLine();
+        System.out.println("Confirm password");
+        String confirmNewPassword = scanner.nextLine();
+        cashierDTO.setPassword(newPassword);
+        cashierDTO.setConfirmPassword(confirmNewPassword);
+        if (!cashierDTO.getPassword().equals(cashierDTO.getConfirmPassword())) {
+            registerCashier(cashier);
         }
-        // try {
-        userRepository.saveAndFlush(user1);
-        sb.append(String.format("%s was registered.", user.getFullName()));
-        // } catch (Exception e) {
-        //   System.out.printf("Email %s already exist", user1.getMail());
-        // }
-//        }else {
-//            sb.append("Passwords are not equals.");
-//
-//        }
-
-        return sb.toString().trim();
+        cashier.setUsername(cashierDTO.getEmail());
+        cashier.setPassword(cashierDTO.getPassword());
     }
 
-*/
+
 }

@@ -14,6 +14,7 @@ public class Good {
 
     private boolean isFragile;
 
+
     private BigDecimal insurancePrice;
 
     public Good() {

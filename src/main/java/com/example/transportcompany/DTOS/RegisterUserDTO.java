@@ -1,10 +1,12 @@
 package com.example.transportcompany.DTOS;
 
 
+import jakarta.persistence.UniqueConstraint;
+
 import javax.validation.constraints.*;
 
 public class RegisterUserDTO {
-    @Email
+
     private String email;
 
     @NotBlank
@@ -15,8 +17,8 @@ public class RegisterUserDTO {
     private String firstName;
     private String lastName;
 
-    public RegisterUserDTO(String email, String password, String confirmPassword, String firstName, String lastName) {
-        this.email = email;
+    public RegisterUserDTO(String username, String password, String confirmPassword, String firstName, String lastName) {
+        this.email = username;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.firstName = firstName;
@@ -65,4 +67,6 @@ public class RegisterUserDTO {
     public String getLastName() {
         return lastName;
     }
+
+
 }

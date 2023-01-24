@@ -23,9 +23,13 @@ public class Company {
 
     private Set<Vehicle> vehicles;
 
-    private Set<Shipment> shipments;
+    private Set<Order> orders;
 
     private Set<Client> clients;
+
+    private Set<Cashier> cashiers;
+
+    private Set<Office> offices;
 
 
     public Company(String name) {
@@ -45,7 +49,7 @@ public class Company {
     public Long getId() {
         return id;
     }
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     public Manager getManager() {
         return manager;
     }
@@ -84,7 +88,6 @@ public class Company {
         this.transports = transports;
     }
     @OneToMany
-    @Column(name = "vehicle")
     public Set<Vehicle> getVehicles() {
         return vehicles;
     }
@@ -93,12 +96,12 @@ public class Company {
         this.vehicles = vehicles;
     }
     @OneToMany
-    public Set<Shipment> getShipments() {
-        return shipments;
+    public Set<Order> getShipments() {
+        return orders;
     }
 
-    public void setShipments(Set<Shipment> shipments) {
-        this.shipments = shipments;
+    public void setShipments(Set<Order> orders) {
+        this.orders = orders;
     }
     @ManyToMany
     public Set<Client> getClients() {
@@ -107,5 +110,14 @@ public class Company {
 
     public void setClients(Set<Client> clients) {
         this.clients = clients;
+    }
+
+    @OneToMany
+    public Set<Office> getOffices() {
+        return offices;
+    }
+
+    public void setOffices(Set<Office> offices) {
+        this.offices = offices;
     }
 }

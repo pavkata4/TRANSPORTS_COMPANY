@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 
 @MappedSuperclass
-public class Person {
+public  class Person {
 
     private long id;
 

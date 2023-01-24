@@ -88,8 +88,7 @@ public class Manager extends Person {
         this.appointmentDate = appointmentDate;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
+   @OneToOne
     public Company getCompany() {
         return company;
     }

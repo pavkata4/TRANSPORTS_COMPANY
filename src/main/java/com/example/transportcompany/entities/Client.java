@@ -12,7 +12,7 @@ public class Client{
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private Set<Shipment> shipments;
+    private Set<Order> orders;
 
     public Client() {
     }
@@ -52,11 +52,11 @@ public class Client{
         this.phoneNumber = phoneNumber;
     }
     @OneToMany
-    public Set<Shipment> getShipments() {
-        return shipments;
+    public Set<Order> getShipments() {
+        return orders;
     }
 
-    public void setShipments(Set<Shipment> shipments) {
-        this.shipments = shipments;
+    public void setShipments(Set<Order> orders) {
+        this.orders = orders;
     }
 }
